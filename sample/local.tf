@@ -6,3 +6,11 @@ resource "local_file" "exemplo" {
 variable "content" {
   type = string
 }
+
+output "file_id" {
+  value = resource.local_file.exemplo.id
+}
+
+output "content" {
+  value = var.content
+}
