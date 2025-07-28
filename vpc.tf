@@ -38,3 +38,27 @@ resource "aws_subnet" "subnets" {
 #     Name = "${var.prefix}-subnet-2"
 #   }
 # }
+
+resource "aws_internet_gateway" "fc-hrsc-igw" {
+  vpc_id = aws_vpc.fc-hrsc-vpc.id
+  tags = {
+    Name = "${var.prefix}-igw"
+  }
+}
+
+resource "aws_route_table" "fc-hrsc-rtb" {
+  vpc_id = aws_vpc.fc-hrsc-vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.fc-hrsc-igw.id
+  }
+  tags = {
+    Name = "${var.prefix}-rtb"
+  }
+}
+
+resource "aws_route_table_association" "fc-hrsc-rta" {
+  count          = 2
+  subnet_id      = aws_subnet.subnets.*.id[count.index]
+  route_table_id = aws_route_table.fc-hrsc-rtb.id
+}
