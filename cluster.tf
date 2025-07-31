@@ -15,3 +15,27 @@ resource "aws_security_group" "fc-hrsc-sg" {
     Name = "${var.prefix}-sg"
   }
 }
+
+resource "aws_iam_role" "cluster" {
+  name = "${var.prefix}-${var.cluster_name}-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cluster-AmazonEKSVPCResourceController" {
+  role       = aws_iam_role.cluster.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+}
+
+resource "aws_iam_role_policy_attachment" "cluster-AmazonEKSClusterPolicy" {
+  role       = aws_iam_role.cluster.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
