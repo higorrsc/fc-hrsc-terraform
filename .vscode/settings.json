@@ -1,11 +1,15 @@
 {
   "cSpell.words": [
+    "awscli",
     "EKSVPC",
     "fullcycle",
     "Fullcycle",
     "hashicorp",
     "hrsc",
     "indentação",
+    "kubeconfig",
+    "KUBECONFIG",
+    "kubernetes",
     "Makefiles",
     "tfvars"
   ]
